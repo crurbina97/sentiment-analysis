@@ -1,5 +1,5 @@
 ---
-title: Asdaadsads
+title: Sentiment Analysis Project
 emoji: 🚀
 colorFrom: red
 colorTo: red
@@ -8,7 +8,7 @@ app_port: 8501
 tags:
 - streamlit
 pinned: false
-short_description: Streamlit template space
+short_description: Sentiment analysis project for learning purposes
 ---
 
 # Streamlit + Hugging Face Sentiment Analysis
