@@ -13,11 +13,11 @@ COPY requirements.txt ./
 # ===========================
 # OPTION B: Pre-download model
 # ===========================
-# This step downloads the model into /model_cache at build time
+# This step downloads the model into /app/model_cache at build time
 RUN pip3 install -r requirements.txt && \
     python3 -c "from transformers import AutoTokenizer, AutoModelForSequenceClassification; \
-    AutoModelForSequenceClassification.from_pretrained('siebert/sentiment-roberta-large-english', cache_dir='/model_cache'); \
-    AutoTokenizer.from_pretrained('siebert/sentiment-roberta-large-english', cache_dir='/model_cache')"
+    AutoModelForSequenceClassification.from_pretrained('siebert/sentiment-roberta-large-english', cache_dir='/app/model_cache'); \
+    AutoTokenizer.from_pretrained('siebert/sentiment-roberta-large-english', cache_dir='/app/model_cache')"
 # ===========================
 
 COPY src/ ./src/
