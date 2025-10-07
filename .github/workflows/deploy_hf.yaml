@@ -10,25 +10,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo with LFS
+      - name: Checkout repo
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          lfs: true   # <-- important: fetch LFS files
 
       - name: Set up Git
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
 
-      - name: Install Git LFS
+      # ------------------- REMOVE ASSETS FROM COMMIT -------------------
+      - name: Remove assets folder for push
         run: |
-          sudo apt-get update
-          sudo apt-get install -y git-lfs
-          git lfs install
-
-      - name: Pull LFS files
-        run: git lfs pull
+          git rm -r --cached assets || true
+          git commit -m "Remove assets folder for workflow push" || true
+      # -----------------------------------------------------------------
 
       - name: Push to Hugging Face Space
         env:
