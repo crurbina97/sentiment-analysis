@@ -1,4 +1,4 @@
-name: Deploy to Hugging Face Space
+name: Deploy Clean Branch to Hugging Face
 
 on:
   push:
@@ -10,27 +10,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo with LFS
-        uses: actions/checkout@v3
+      # 1. Checkout repository
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          lfs: true  # <-- critical: fetch LFS objects
 
-      - name: Set up Git
-        run: |
+      # 2. Configure Git
+      - run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
 
-      - name: Install Git LFS
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y git-lfs
-          git lfs install
+      # 3. Create clean branch and ignore assets/
+      - run: |
+          git checkout --orphan hf-main
+          git rm -rf assets || true       # remove assets folder
+          git add .
+          git commit -m "Deploy clean branch to HF"
 
-      - name: Push to Hugging Face Space
-        env:
+      # 4. Push to Hugging Face
+      - env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
           git remote add hf https://user:$HF_TOKEN@huggingface.co/spaces/crurbina97/sentiment-analysis
-          git fetch hf
-          git push hf main --force
+          git push hf hf-main:main --force
+
+      # 5. Return to main
+      - run: git checkout main
