@@ -1,7 +1,7 @@
 import streamlit as st 
 import pandas as pd 
 from utils import load_model, analyze_sentiment, display_single_result 
- 
+
 # Set page configuration 
 st.set_page_config( 
     page_title="Sentiment Analysis", 
@@ -15,10 +15,11 @@ def main():
     
    # Load the best model only 
     model_name = "siebert/sentiment-roberta-large-english" 
+    cache_dir = "model_cache"  # Added for Cache Preload
      
     # Initialize model with loading message 
     with st.spinner("Loading model... This may take a moment on first run."): 
-        classifier = load_model(model_name) 
+        classifier = load_model(model_name, cache_dir=cache_dir)
      
     if classifier is None: 
         st.error("Failed to load sentiment analysis model. Please refresh the page.") 

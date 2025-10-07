@@ -9,6 +9,16 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt ./
+
+# ===========================
+# OPTION B: Pre-download model
+# ===========================
+# This step downloads the model into /model_cache at build time
+RUN python -c "from transformers import AutoTokenizer, AutoModelForSequenceClassification; \
+    AutoModelForSequenceClassification.from_pretrained('siebert/sentiment-roberta-large-english', cache_dir='/model_cache'); \
+    AutoTokenizer.from_pretrained('siebert/sentiment-roberta-large-english', cache_dir='/model_cache')"
+# ===========================
+
 COPY src/ ./src/
 
 RUN pip3 install -r requirements.txt

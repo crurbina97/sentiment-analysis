@@ -3,7 +3,7 @@ import streamlit as st
 import pandas as pd
  
 @st.cache_resource 
-def load_model(model_name): 
+def load_model(model_name, cache_dir=None):
     """Load and cache the sentiment analysis model.""" 
     try: 
         return pipeline("sentiment-analysis", model=model_name, return_all_scores=True) 
@@ -78,7 +78,10 @@ def display_single_result(results, text_input=None):
 #model_name = "cardiffnlp/twitter-roberta-base-sentiment" 
  
 # For multilingual support 
-model_name = "nlptown/bert-base-multilingual-uncased-sentiment" 
+#model_name = "nlptown/bert-base-multilingual-uncased-sentiment" 
  
 # For fast performance 
 #model_name = "distilbert-base-uncased-finetuned-sst-2-english" 
+
+# Load the best model only 
+model_name = "siebert/sentiment-roberta-large-english" 
