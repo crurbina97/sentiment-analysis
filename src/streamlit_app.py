@@ -3,10 +3,10 @@ import streamlit as st
 import pandas as pd
  
 @st.cache_resource 
-def load_model(model_name, cache_dir=None):
+def load_model(model_name):
     """Load and cache the sentiment analysis model.""" 
     try: 
-        return pipeline("sentiment-analysis", model=model_name,  return_all_scores=True)
+        return pipeline("sentiment-analysis", model=model_name, return_all_scores=True)
     except Exception as e: 
         st.error(f"Error loading model {model_name}: {str(e)}") 
         return None
@@ -91,11 +91,10 @@ def main():
     # Load the best model only 
     model_name = "siebert/sentiment-roberta-large-english"
     
-    cache_dir = "/app/model_cache"  # Added for Cache Preload
      
     # Initialize model with loading message 
     with st.spinner("Loading model... This may take a moment on first run."): 
-        classifier = load_model(model_name, cache_dir=cache_dir)
+        classifier = load_model(model_name)
      
     if classifier is None: 
         st.error("Failed to load sentiment analysis model. Please refresh the page.") 
