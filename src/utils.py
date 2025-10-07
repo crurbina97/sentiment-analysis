@@ -6,13 +6,7 @@ import pandas as pd
 def load_model(model_name, cache_dir=None):
     """Load and cache the sentiment analysis model.""" 
     try: 
-        return pipeline(
-            "sentiment-analysis",
-            model=model_name,
-            tokenizer=model_name,     # Optional but good practice
-            return_all_scores=True,
-            cache_dir=cache_dir       #  use the pre-downloaded folder
-        )
+        return pipeline("sentiment-analysis", model="model_cache", return_all_scores=True)
     except Exception as e: 
         st.error(f"Error loading model {model_name}: {str(e)}") 
         return None
