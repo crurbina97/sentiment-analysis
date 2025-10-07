@@ -3,29 +3,29 @@ name: Deploy to Hugging Face Space
 on:
   push:
     branches:
-      - main  # Trigger workflow when pushing to main branch
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repo with LFS
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+          lfs: true  # <-- critical: fetch LFS objects
 
       - name: Set up Git
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
 
-      # ------------------- REMOVE ASSETS FROM COMMIT -------------------
-      - name: Remove assets folder for push
+      - name: Install Git LFS
         run: |
-          git rm -r --cached assets || true
-          git commit -m "Remove assets folder for workflow push" || true
-      # -----------------------------------------------------------------
+          sudo apt-get update
+          sudo apt-get install -y git-lfs
+          git lfs install
 
       - name: Push to Hugging Face Space
         env:
